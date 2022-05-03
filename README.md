@@ -1,0 +1,1 @@
+# nunit3testadapter-sample
