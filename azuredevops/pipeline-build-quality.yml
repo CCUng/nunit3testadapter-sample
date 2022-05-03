@@ -1,0 +1,90 @@
+name: $(Date:yyyy.MM.dd).$(Rev:r)
+
+trigger:
+- master
+- main
+
+variables:
+  solution: Solution2.sln
+  NUGET_PACKAGES: $(Build.SourcesDirectory)/packages
+
+pool:
+  vmImage: windows-2022
+
+stages:
+- stage: analysis
+  displayName: Code Quality Analysis
+  jobs:
+  - job:
+    displayName: Debug Build
+    variables:
+      buildPlatform: AnyCPU
+      buildConfiguration: Debug
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+      lfs: true
+    - task: Cache@2
+      displayName: 'Restore nuget cache'
+      inputs:
+        path: $(NUGET_PACKAGES)
+        key: 'nuget | **/packages.lock.json'
+    - task: VisualStudioTestPlatformInstaller@1
+      displayName: Install Visual Studio Test Platform
+      inputs:
+          packageFeedSelector: 'nugetOrg'
+          versionSelector: 'specificVersion'
+          testPlatformVersion: '17.1.0'
+    - task: NuGetAuthenticate@0
+    - powershell: |
+        &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\msbuild.exe" `
+          "$(System.DefaultWorkingDirectory)\$(solution)" `
+          -nologo `
+          -nodeReuse:false `
+          -maxCpuCount `
+          -property:VisualStudioVersion="17.1" `
+          -property:platform="$(buildPlatform)" `
+          -property:configuration="$(buildConfiguration)" `
+          -restore `
+          -property:RestoreLockedMode=true
+      displayName: Build
+    - task: VSTest@2
+      displayName: 'Run unit and integration tests (net48)'
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+          **\*test*.dll
+          !**\*TestAdapter*.dll
+          !**\*TestPlatform*.dll
+          !**\testhost*.dll
+          !**\obj\**
+          !**\ref\**
+          !**\net6.0\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        vsTestVersion: 'toolsInstaller'
+        runInParallel: true
+        codeCoverageEnabled: true
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        failOnMinTestsNotRun: true
+        minimumExpectedTests: '1'
+    - task: VSTest@2
+      displayName: 'Run unit and integration tests (net6.0)'
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+          **\net6.0\**\*test*.dll
+          !**\*TestAdapter*.dll
+          !**\*TestPlatform*.dll
+          !**\testhost*.dll
+          !**\obj\**
+          !**\ref\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        vsTestVersion: 'toolsInstaller'
+        runInParallel: true
+        codeCoverageEnabled: true
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        failOnMinTestsNotRun: true
+        minimumExpectedTests: '1'

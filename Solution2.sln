@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib", "Lib\Lib.csproj", "{7577D804-DCFF-4465-8138-087E2AEAA2E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Test", "Lib.Test\Lib.Test.csproj", "{20C7E3F5-7411-4341-ADD4-E6B48A0F57EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7577D804-DCFF-4465-8138-087E2AEAA2E7}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{7577D804-DCFF-4465-8138-087E2AEAA2E7}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
+		{7577D804-DCFF-4465-8138-087E2AEAA2E7}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
+		{7577D804-DCFF-4465-8138-087E2AEAA2E7}.Release|AnyCPU.Build.0 = Release|AnyCPU
+		{20C7E3F5-7411-4341-ADD4-E6B48A0F57EB}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{20C7E3F5-7411-4341-ADD4-E6B48A0F57EB}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
+		{20C7E3F5-7411-4341-ADD4-E6B48A0F57EB}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
+		{20C7E3F5-7411-4341-ADD4-E6B48A0F57EB}.Release|AnyCPU.Build.0 = Release|AnyCPU
+	EndGlobalSection
+EndGlobal

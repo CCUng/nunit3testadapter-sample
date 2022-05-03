@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    <PropertyGroup>
+        <!-- By default only exe targets get redirect bindings, we need this also for runnable targets like unit tests. -->
+        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+
+        <!-- On CI builds restore the exact versions as locked. -->
+        <RestoreLockedMode Condition="'$(OS)' == 'Windows_NT' And '$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
+
+        <!-- Force nuget to ignore existing lock files. -->
+        <NuGetLockFilePath Condition="'$(OS)' != 'Windows_NT'">no.lock.file</NuGetLockFilePath>
+
+        <!-- Configure project as PackageReference by default. -->
+        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    </PropertyGroup>
+</Project>
